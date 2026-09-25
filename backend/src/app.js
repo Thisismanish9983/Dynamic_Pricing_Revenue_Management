@@ -48,10 +48,44 @@ if (fs.existsSync(frontendDist)) {
   app.use(express.static(frontendDist));
 }
 
+const mongoose = require('mongoose');
+const connectDB = require('../../database/connection');
+
+// Database auto-connection middleware for serverless & local requests
+app.use(async (req, res, next) => {
+  // Always let health check and static assets proceed
+  if (req.path === '/api/health' || req.path === '/health' || !req.path.startsWith('/api')) {
+    return next();
+  }
+
+  try {
+    await connectDB();
+    return next();
+  } catch (err) {
+    console.error('[Database Middleware Error]:', err.message);
+    return res.status(500).json({
+      success: false,
+      message: 'Database connection failed. Please ensure MONGODB_URI is configured properly in Vercel environment variables.',
+      error: err.message,
+    });
+  }
+});
+
 // Health Check route
-app.get('/api/health', (req, res) => {
+app.get('/api/health', async (req, res) => {
+  let dbStatus = 'disconnected';
+  try {
+    if (mongoose.connection.readyState !== 1 && process.env.MONGODB_URI) {
+      await connectDB();
+    }
+    dbStatus = mongoose.connection.readyState === 1 ? 'connected' : 'disconnected (MONGODB_URI not configured)';
+  } catch (err) {
+    dbStatus = 'connection_failed: ' + err.message;
+  }
+
   res.status(200).json({
     status: 'online',
+    database: dbStatus,
     service: 'Dynamic Pricing & Revenue Management API',
     architecture: 'Frontend (React) | Backend (Express) | Database (MongoDB)',
     version: '1.0.0',
