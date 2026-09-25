@@ -109,6 +109,36 @@ app.use(['/api/dashboard', '/dashboard'], dashboardRoutes);
 
 
 
+// Resolve static build directory (supports both root dist and frontend/dist)
+const distRoot = path.join(__dirname, '../../dist');
+const distFrontend = path.join(__dirname, '../../frontend/dist');
+const staticDir = fs.existsSync(distRoot) ? distRoot : distFrontend;
+
+if (fs.existsSync(staticDir)) {
+  app.use(express.static(staticDir));
+}
+
+// SPA Fallback: If non-API route hits Express, serve index.html
+app.get('*', (req, res, next) => {
+  if (
+    req.path.startsWith('/api') ||
+    req.path.startsWith('/auth') ||
+    req.path.startsWith('/dashboard') ||
+    req.path.startsWith('/users') ||
+    req.path.startsWith('/organizations') ||
+    req.path === '/health'
+  ) {
+    return next();
+  }
+
+  const indexPath = path.join(staticDir, 'index.html');
+  if (fs.existsSync(indexPath)) {
+    return res.sendFile(indexPath);
+  }
+
+  next();
+});
+
 // Global 404 Handler for unmatched API routes
 app.use('*', (req, res) => {
   res.status(404).json({
