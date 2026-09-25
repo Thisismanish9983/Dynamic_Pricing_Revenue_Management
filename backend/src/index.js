@@ -9,9 +9,10 @@ connectDB()
   .then(() => {
     app.listen(PORT, () => {
       console.log(`=======================================================`);
-      console.log(` Backend Server running on http://localhost:${PORT}`);
-      console.log(` Connected to Database layer: ../database`);
-      console.log(` Environment: ${process.env.NODE_ENV || 'development'}`);
+      console.log(` 🚀 React Frontend UI:  http://localhost:5173  <-- OPEN THIS`);
+      console.log(` ⚡ Express Backend API: http://localhost:${PORT}`);
+      console.log(` 🗄️  Database Layer:     ../database`);
+      console.log(` 🌍 Environment:        ${process.env.NODE_ENV || 'development'}`);
       console.log(`=======================================================`);
     });
   })
