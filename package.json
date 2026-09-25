@@ -2,6 +2,7 @@
   "name": "dynamic-pricing-revenue-management",
   "version": "1.0.0",
   "description": "Multi-tenant Dynamic Pricing & Revenue Management SaaS Platform",
+  "main": "api/index.js",
   "scripts": {
     "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
     "dev:backend": "cd backend && npm run dev",
@@ -9,6 +10,8 @@
     "seed:database": "cd database && npm run seed",
     "seed": "cd database && npm run seed",
     "build:frontend": "cd frontend && npm run build",
+    "build": "cd frontend && npm install && npm run build",
+    "start": "node backend/src/index.js",
     "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install"
   },
   "keywords": [
@@ -26,6 +29,12 @@
     "concurrently": "^9.1.2"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.9.5",
     "nodemon": "^3.1.14"
   }
 }
