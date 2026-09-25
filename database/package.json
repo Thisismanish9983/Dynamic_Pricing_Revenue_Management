@@ -1,0 +1,14 @@
+{
+  "name": "dynamic-pricing-database",
+  "version": "1.0.0",
+  "description": "Database models, configuration, schemas, and seeding scripts for Dynamic Pricing SaaS",
+  "main": "connection.js",
+  "scripts": {
+    "seed": "node seed.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.7",
+    "mongoose": "^8.9.5"
+  }
+}
