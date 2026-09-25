@@ -72,7 +72,7 @@ app.use(async (req, res, next) => {
 });
 
 // Health Check route
-app.get('/api/health', async (req, res) => {
+app.get(['/api/health', '/health'], async (req, res) => {
   let dbStatus = 'disconnected';
   try {
     if (mongoose.connection.readyState !== 1 && process.env.MONGODB_URI) {
@@ -93,16 +93,23 @@ app.get('/api/health', async (req, res) => {
   });
 });
 
-// API Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/organizations', orgRoutes);
-app.use('/api/users', userRoutes);
-app.use('/api/dashboard', dashboardRoutes);
+// API Routes - Mounted on both /api/* and /* for full Vercel Serverless and local compatibility
+app.use(['/api/auth', '/auth'], authRoutes);
+app.use(['/api/organizations', '/organizations'], orgRoutes);
+app.use(['/api/users', '/users'], userRoutes);
+app.use(['/api/dashboard', '/dashboard'], dashboardRoutes);
 
 // Catch-all for non-API routes (serves frontend or helpful guidance page)
 app.get('*', (req, res, next) => {
   // Pass unhandled API requests to 404 handler
-  if (req.originalUrl.startsWith('/api')) {
+  if (
+    req.originalUrl.startsWith('/api') ||
+    req.originalUrl.startsWith('/auth') ||
+    req.originalUrl.startsWith('/dashboard') ||
+    req.originalUrl.startsWith('/users') ||
+    req.originalUrl.startsWith('/organizations') ||
+    req.originalUrl === '/health'
+  ) {
     return next();
   }
 
