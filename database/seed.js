@@ -224,11 +224,21 @@ const seedData = async () => {
     ]);
 
     console.log('[Database Seed] Seeding completed successfully!');
-    process.exit(0);
+    if (require.main === module) {
+      process.exit(0);
+    }
+    return { success: true, message: 'Seeding completed successfully' };
   } catch (error) {
     console.error('[Database Seed Error]', error);
-    process.exit(1);
+    if (require.main === module) {
+      process.exit(1);
+    }
+    throw error;
   }
 };
 
-seedData();
+if (require.main === module) {
+  seedData();
+}
+
+module.exports = seedData;

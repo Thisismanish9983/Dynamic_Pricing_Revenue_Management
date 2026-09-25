@@ -22,6 +22,22 @@ export default function Login() {
     }
   };
 
+  const [seeding, setSeeding] = useState(false);
+
+  const handleSeedDatabase = async () => {
+    setSeeding(true);
+    setError('');
+    try {
+      const res = await apiClient.post('/auth/seed-demo', {});
+      await login('admin@grandvista.com', 'password123');
+      window.location.hash = '#/dashboard';
+    } catch (err) {
+      setError(err.message || 'Failed to seed database. Check MONGODB_URI in Vercel.');
+    } finally {
+      setSeeding(false);
+    }
+  };
+
   const handleDemoLogin = async (demoEmail) => {
     setEmail(demoEmail);
     setPassword('password123');
@@ -31,7 +47,11 @@ export default function Login() {
       await login(demoEmail, 'password123');
       window.location.hash = '#/dashboard';
     } catch (err) {
-      setError(err.message || 'Demo login failed');
+      if (err.message && err.message.toLowerCase().includes('not found')) {
+        setError('Demo database is empty! Click the "🌱 Initialize Demo Data" button below.');
+      } else {
+        setError(err.message || 'Demo login failed');
+      }
     } finally {
       setSubmitting(false);
     }
@@ -131,6 +151,27 @@ export default function Login() {
             >
               <div className="demo-btn-title">👁️ Viewer</div>
               <div className="demo-btn-desc">Read-Only Analytics</div>
+            </button>
+          </div>
+
+          <div style={{ marginTop: '12px', textAlign: 'center' }}>
+            <button
+              type="button"
+              onClick={handleSeedDatabase}
+              disabled={seeding}
+              style={{
+                background: 'rgba(56, 189, 248, 0.08)',
+                border: '1px dashed rgba(56, 189, 248, 0.4)',
+                color: '#38bdf8',
+                fontSize: '11px',
+                padding: '7px 12px',
+                borderRadius: '8px',
+                cursor: 'pointer',
+                width: '100%',
+                fontWeight: '500',
+              }}
+            >
+              {seeding ? '🌱 Initializing Database...' : '🌱 Cloud Database Empty? 1-Click Initialize Demo Data'}
             </button>
           </div>
         </div>

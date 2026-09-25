@@ -235,3 +235,22 @@ exports.getDemoAccounts = async (req, res) => {
     });
   }
 };
+
+// @desc Seed database with demo data (can be triggered from frontend or demo setup)
+// @route POST /api/auth/seed-demo
+exports.seedDemoDatabase = async (req, res) => {
+  try {
+    const seedData = require('../../../database/seed');
+    await seedData();
+    return res.status(200).json({
+      success: true,
+      message: 'Demo database seeded successfully with Grand Vista Hotel and Apex Events!',
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to seed demo database',
+      error: error.message,
+    });
+  }
+};

@@ -13,7 +13,7 @@ const connectDB = async (customUri) => {
 
   try {
     const conn = await mongoose.connect(mongoUri, {
-      serverSelectionTimeoutMS: 5000,
+      serverSelectionTimeoutMS: 10000,
     });
     cachedConnection = conn;
     console.log(`[Database] MongoDB Connected: ${conn.connection.host}/${conn.connection.name}`);
