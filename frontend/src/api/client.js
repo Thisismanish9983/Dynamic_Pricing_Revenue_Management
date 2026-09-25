@@ -30,7 +30,14 @@ export const apiClient = {
       }
     }
 
-    const data = await response.json();
+    let data;
+    const text = await response.text();
+    try {
+      data = JSON.parse(text);
+    } catch {
+      data = { message: text || `HTTP error ${response.status}` };
+    }
+
     if (!response.ok) {
       throw new Error(data.message || 'API request failed');
     }

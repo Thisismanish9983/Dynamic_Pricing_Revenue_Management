@@ -24,7 +24,7 @@ export default function Register() {
     setSubmitting(true);
     try {
       await register(formData);
-      window.location.hash = '#/';
+      window.location.hash = '#/dashboard';
     } catch (err) {
       setError(err.message || 'Registration failed. Please check inputs.');
     } finally {

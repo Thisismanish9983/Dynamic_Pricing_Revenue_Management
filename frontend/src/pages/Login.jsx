@@ -14,7 +14,7 @@ export default function Login() {
     setSubmitting(true);
     try {
       await login(email, password);
-      window.location.hash = '#/';
+      window.location.hash = '#/dashboard';
     } catch (err) {
       setError(err.message || 'Login failed. Please check credentials.');
     } finally {
@@ -29,7 +29,7 @@ export default function Login() {
     setSubmitting(true);
     try {
       await login(demoEmail, 'password123');
-      window.location.hash = '#/';
+      window.location.hash = '#/dashboard';
     } catch (err) {
       setError(err.message || 'Demo login failed');
     } finally {
