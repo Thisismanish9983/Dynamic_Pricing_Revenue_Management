@@ -49,9 +49,17 @@ const connectDB = require('../../database/connection');
 
 // Database auto-connection middleware for serverless & local requests
 app.use(async (req, res, next) => {
-  // Always let health check and static assets proceed
-  if (req.path === '/api/health' || req.path === '/health' || !req.path.startsWith('/api')) {
+  // Always let health check proceed without waiting for database
+  if (req.path === '/api/health' || req.path === '/health') {
     return next();
+  }
+
+  // If in production and MONGODB_URI is not set
+  if (!process.env.MONGODB_URI && (process.env.VERCEL || process.env.NODE_ENV === 'production')) {
+    return res.status(500).json({
+      success: false,
+      message: 'MONGODB_URI environment variable is missing. Please add MONGODB_URI in Vercel Project Settings.',
+    });
   }
 
   try {
@@ -61,7 +69,7 @@ app.use(async (req, res, next) => {
     console.error('[Database Middleware Error]:', err.message);
     return res.status(500).json({
       success: false,
-      message: 'Database connection failed. Please ensure MONGODB_URI is configured properly in Vercel environment variables.',
+      message: 'Database connection failed. Please ensure MONGODB_URI is valid and MongoDB Atlas IP Whitelist (0.0.0.0/0) is configured.',
       error: err.message,
     });
   }
@@ -70,13 +78,17 @@ app.use(async (req, res, next) => {
 // Health Check route
 app.get(['/api/health', '/health'], async (req, res) => {
   let dbStatus = 'disconnected';
-  try {
-    if (mongoose.connection.readyState !== 1 && process.env.MONGODB_URI) {
-      await connectDB();
+  if (!process.env.MONGODB_URI) {
+    dbStatus = 'disconnected (MONGODB_URI not configured in Vercel)';
+  } else {
+    try {
+      if (mongoose.connection.readyState !== 1) {
+        await connectDB();
+      }
+      dbStatus = mongoose.connection.readyState === 1 ? 'connected' : 'disconnected';
+    } catch (err) {
+      dbStatus = 'connection_error: ' + err.message;
     }
-    dbStatus = mongoose.connection.readyState === 1 ? 'connected' : 'disconnected (MONGODB_URI not configured)';
-  } catch (err) {
-    dbStatus = 'connection_failed: ' + err.message;
   }
 
   res.status(200).json({
