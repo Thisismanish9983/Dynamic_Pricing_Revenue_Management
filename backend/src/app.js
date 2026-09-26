@@ -9,6 +9,12 @@ const authRoutes = require('./routes/authRoutes');
 const orgRoutes = require('./routes/orgRoutes');
 const userRoutes = require('./routes/userRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
+const productRoutes = require('./routes/productRoutes');
+const ruleRoutes = require('./routes/ruleRoutes');
+const calendarRoutes = require('./routes/calendarRoutes');
+const recommendationRoutes = require('./routes/recommendationRoutes');
+const analyticsRoutes = require('./routes/analyticsRoutes');
+const notificationRoutes = require('./routes/notificationRoutes');
 
 const app = express();
 
@@ -106,6 +112,12 @@ app.use(['/api/auth', '/auth'], authRoutes);
 app.use(['/api/organizations', '/organizations'], orgRoutes);
 app.use(['/api/users', '/users'], userRoutes);
 app.use(['/api/dashboard', '/dashboard'], dashboardRoutes);
+app.use(['/api/products', '/products'], productRoutes);
+app.use(['/api/rules', '/rules'], ruleRoutes);
+app.use(['/api/calendar', '/calendar'], calendarRoutes);
+app.use(['/api/recommendations', '/recommendations'], recommendationRoutes);
+app.use(['/api/analytics', '/analytics'], analyticsRoutes);
+app.use(['/api/notifications', '/notifications'], notificationRoutes);
 
 
 
@@ -126,6 +138,12 @@ app.get('*', (req, res, next) => {
     req.path.startsWith('/dashboard') ||
     req.path.startsWith('/users') ||
     req.path.startsWith('/organizations') ||
+    req.path.startsWith('/products') ||
+    req.path.startsWith('/rules') ||
+    req.path.startsWith('/calendar') ||
+    req.path.startsWith('/recommendations') ||
+    req.path.startsWith('/analytics') ||
+    req.path.startsWith('/notifications') ||
     req.path === '/health'
   ) {
     return next();

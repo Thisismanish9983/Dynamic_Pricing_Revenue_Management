@@ -51,7 +51,7 @@ export default function Sidebar({ currentRoute }) {
                   </span>
                   <span>{item.label}</span>
                 </div>
-                <span className={`milestone-tag ${item.milestone === 'M1' ? 'active' : ''}`}>
+                <span className={`milestone-tag ${['M1', 'M2', 'M3', 'M4'].includes(item.milestone) ? 'active' : ''}`}>
                   {item.milestone}
                 </span>
               </a>
@@ -64,7 +64,7 @@ export default function Sidebar({ currentRoute }) {
       <div className="sidebar-footer">
         <div className="footer-box">
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
-            <span style={{ fontWeight: '600', color: 'var(--text-primary)' }}>Milestone 1 Active</span>
+            <span style={{ fontWeight: '600', color: 'var(--text-primary)' }}>All Milestones (M1-M4) Active</span>
             <span style={{ color: 'var(--emerald)', fontSize: '10px' }}>● Live</span>
           </div>
           <div style={{ color: 'var(--text-muted)' }}>

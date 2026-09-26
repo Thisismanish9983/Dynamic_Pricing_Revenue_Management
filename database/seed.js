@@ -2,7 +2,16 @@ const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '../backend/.env') });
 const mongoose = require('mongoose');
 const connectDB = require('./connection');
-const { Organization, User, Product, AuditLog, Notification } = require('./models');
+const {
+  Organization,
+  User,
+  Product,
+  PricingRule,
+  PriceOverride,
+  PriceRecommendation,
+  AuditLog,
+  Notification,
+} = require('./models');
 
 const seedData = async () => {
   try {
@@ -13,6 +22,9 @@ const seedData = async () => {
     await Organization.deleteMany({});
     await User.deleteMany({});
     await Product.deleteMany({});
+    await PricingRule.deleteMany({});
+    await PriceOverride.deleteMany({});
+    await PriceRecommendation.deleteMany({});
     await AuditLog.deleteMany({});
     await Notification.deleteMany({});
 
@@ -167,7 +179,141 @@ const seedData = async () => {
 
     console.log(`[Database Seed] Seeded ${products.length} products.`);
 
-    // 5. Create Sample Notifications
+    // 5. Seed Dynamic Pricing Rules for Grand Vista Boutique Hotel
+    const pricingRules = await PricingRule.create([
+      {
+        organizationId: hotelOrg._id,
+        name: 'High Occupancy Demand Surge',
+        description: 'Automatically increases room rates by 15% when total category occupancy hits or exceeds 80%.',
+        ruleType: 'occupancy',
+        conditions: {
+          occupancyThreshold: 80,
+          occupancyOperator: '>=',
+        },
+        action: {
+          adjustmentType: 'percentage_increase',
+          adjustmentValue: 15,
+        },
+        priority: 10,
+        isActive: true,
+        enforceClamping: true,
+        createdBy: revenueManager._id,
+      },
+      {
+        organizationId: hotelOrg._id,
+        name: 'Weekend Surcharge Premium',
+        description: 'Applies a 20% premium surcharge for Friday, Saturday, and Sunday bookings to capture peak leisure demand.',
+        ruleType: 'weekend',
+        conditions: {
+          daysOfWeek: ['Friday', 'Saturday', 'Sunday'],
+        },
+        action: {
+          adjustmentType: 'percentage_increase',
+          adjustmentValue: 20,
+        },
+        priority: 8,
+        isActive: true,
+        enforceClamping: true,
+        createdBy: revenueManager._id,
+      },
+      {
+        organizationId: hotelOrg._id,
+        name: 'Low Occupancy Promotional Stimulus',
+        description: 'Provides a 10% promotional rate discount when unit occupancy drops below 30% to stimulate bookings.',
+        ruleType: 'occupancy',
+        conditions: {
+          occupancyThreshold: 30,
+          occupancyOperator: '<=',
+        },
+        action: {
+          adjustmentType: 'percentage_decrease',
+          adjustmentValue: 10,
+        },
+        priority: 5,
+        isActive: true,
+        enforceClamping: true,
+        createdBy: revenueManager._id,
+      },
+      {
+        organizationId: hotelOrg._id,
+        name: 'Peak Summer Holiday Schedule',
+        description: 'Applies a $25 flat rate increase across all suites during prime summer peak holiday travel.',
+        ruleType: 'seasonal',
+        conditions: {
+          seasonStart: new Date('2026-06-01'),
+          seasonEnd: new Date('2026-08-31'),
+        },
+        action: {
+          adjustmentType: 'fixed_increase',
+          adjustmentValue: 25,
+        },
+        priority: 6,
+        isActive: false, // Inactive scheduled template
+        enforceClamping: true,
+        createdBy: revenueManager._id,
+      },
+    ]);
+
+    console.log(`[Database Seed] Seeded ${pricingRules.length} pricing rules.`);
+
+    // 6. Seed Sample Recommendations for Grand Vista Boutique Hotel
+    const recommendations = await PriceRecommendation.create([
+      {
+        organizationId: hotelOrg._id,
+        productId: products[0]._id,
+        targetDate: '2026-09-28',
+        basePrice: products[0].basePrice,
+        currentPrice: products[0].currentPrice,
+        recommendedPrice: 220,
+        demandMultiplier: 1.22,
+        occupancyRate: 84,
+        triggerReason: 'High Occupancy Demand Surge (84% >= 80%)',
+        status: 'pending',
+      },
+      {
+        organizationId: hotelOrg._id,
+        productId: products[1]._id,
+        targetDate: '2026-09-29',
+        basePrice: products[1].basePrice,
+        currentPrice: products[1].currentPrice,
+        recommendedPrice: 560,
+        demandMultiplier: 1.24,
+        occupancyRate: 80,
+        triggerReason: 'Occupancy Surge + Penthouse Scarcity (1 unit left)',
+        status: 'pending',
+      },
+      {
+        organizationId: hotelOrg._id,
+        productId: products[3]._id,
+        targetDate: '2026-09-30',
+        basePrice: products[3].basePrice,
+        currentPrice: products[3].currentPrice,
+        recommendedPrice: 125,
+        demandMultiplier: 0.89,
+        occupancyRate: 25,
+        triggerReason: 'Low Occupancy Promotional Stimulus (25% <= 30%)',
+        status: 'approved',
+        reviewedBy: revenueManager._id,
+        reviewedAt: new Date(),
+      },
+    ]);
+
+    // Seed sample override
+    await PriceOverride.create({
+      organizationId: hotelOrg._id,
+      productId: products[0]._id,
+      date: '2026-09-27',
+      overridePrice: 240,
+      originalPrice: 180,
+      recommendedPrice: 220,
+      reason: 'Regional Boat Show Weekend VIP allocation',
+      status: 'active',
+      createdBy: revenueManager._id,
+    });
+
+    console.log(`[Database Seed] Seeded ${recommendations.length} recommendations and 1 override.`);
+
+    // 7. Create Sample Notifications
     await Notification.create([
       {
         organizationId: hotelOrg._id,
