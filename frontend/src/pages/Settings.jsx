@@ -76,8 +76,8 @@ export default function Settings() {
     <div className="page-wrapper" style={{ maxWidth: '860px' }}>
       <div className="card banner-card">
         <div>
-          <h1 style={{ fontSize: '20px', fontWeight: '700', color: '#fff' }}>
-            ⚙️ Organization & Tenant Settings
+          <h1 style={{ fontSize: '20px', fontWeight: '700', color: 'var(--text-primary)' }}>
+            Organization & Tenant Settings
           </h1>
           <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '4px' }}>
             Manage pricing safeguard guardrails, automation rules, and tenant preferences.
@@ -91,8 +91,8 @@ export default function Settings() {
       <form onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
         {/* General Info */}
         <div className="card">
-          <h2 style={{ fontSize: '14px', fontWeight: '700', color: '#fff', marginBottom: '16px' }}>
-            🏢 General Tenant Information
+          <h2 style={{ fontSize: '14px', fontWeight: '700', color: 'var(--text-primary)', marginBottom: '16px' }}>
+            General Tenant Information
           </h2>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
@@ -150,8 +150,8 @@ export default function Settings() {
 
         {/* Pricing Safeguards */}
         <div className="card">
-          <h2 style={{ fontSize: '14px', fontWeight: '700', color: '#fff', marginBottom: '16px' }}>
-            🛡️ Dynamic Pricing Engine Safeguards
+          <h2 style={{ fontSize: '14px', fontWeight: '700', color: 'var(--text-primary)', marginBottom: '16px' }}>
+            Dynamic Pricing Engine Safeguards
           </h2>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
@@ -219,7 +219,7 @@ export default function Settings() {
                 style={{ width: '16px', height: '16px' }}
               />
               <div>
-                <span style={{ fontSize: '13px', fontWeight: '600', color: '#fff' }}>
+                <span style={{ fontSize: '13px', fontWeight: '600', color: 'var(--text-primary)' }}>
                   Auto-Publish Calculated Dynamic Rates
                 </span>
                 <p style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
@@ -242,7 +242,7 @@ export default function Settings() {
                 style={{ width: '16px', height: '16px' }}
               />
               <div>
-                <span style={{ fontSize: '13px', fontWeight: '600', color: '#fff' }}>
+                <span style={{ fontSize: '13px', fontWeight: '600', color: 'var(--text-primary)' }}>
                   Enable Anomaly & Demand Spike Alerts
                 </span>
                 <p style={{ fontSize: '11px', color: 'var(--text-muted)' }}>

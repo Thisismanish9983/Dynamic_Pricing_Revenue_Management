@@ -1,5 +1,14 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+import BrandLogo from '../components/BrandLogo';
+import {
+  IconRules,
+  IconCalendar,
+  IconShield,
+  IconRecommendations,
+  IconBuilding,
+  IconUsers
+} from '../components/Icons';
 
 export default function LandingPage() {
   const { user } = useAuth();
@@ -43,12 +52,8 @@ export default function LandingPage() {
       {/* 1. Global Navigation Bar */}
       <nav className="landing-nav">
         <div className="landing-nav-inner">
-          <a href="#/" className="landing-brand">
-            <div className="landing-brand-logo">📈</div>
-            <div>
-              <span className="landing-brand-title">PRICEMATRIX</span>
-              <span className="landing-brand-badge">SaaS</span>
-            </div>
+          <a href="#/" className="landing-brand" style={{ textDecoration: 'none' }}>
+            <BrandLogo size={36} showSubtitle={false} />
           </a>
 
           <div className="landing-nav-links">
@@ -81,7 +86,7 @@ export default function LandingPage() {
       <section className="landing-hero">
         <div className="hero-content">
           <div className="hero-pill">
-            <span className="hero-pill-sparkle">✨</span>
+            <span className="hero-pill-sparkle">●</span>
             <span>Intelligent Dynamic Pricing & Revenue Optimization</span>
           </div>
 
@@ -121,7 +126,7 @@ export default function LandingPage() {
               <span style={{ backgroundColor: '#f59e0b' }}></span>
               <span style={{ backgroundColor: '#10b981' }}></span>
             </div>
-            <div className="mockup-title">PRICEMATRIX Operations Console • Live Telemetry</div>
+            <div className="mockup-title">PriceMatrix Operations Console • Live Telemetry</div>
             <span className="status-tag">Engine Online</span>
           </div>
 
@@ -151,7 +156,7 @@ export default function LandingPage() {
 
             <div className="mockup-row">
               <div>
-                <div style={{ fontWeight: '700', color: '#fff', fontSize: '13px' }}>
+                <div style={{ fontWeight: '700', color: 'var(--text-primary)', fontSize: '13px' }}>
                   Deluxe Ocean View King Room
                 </div>
                 <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
@@ -162,7 +167,7 @@ export default function LandingPage() {
                 <span style={{ textDecoration: 'line-through', color: 'var(--text-dim)', fontSize: '11px', marginRight: '8px' }}>
                   $180 Base
                 </span>
-                <span style={{ color: 'var(--gold-light)', fontWeight: '800', fontSize: '15px' }}>
+                <span style={{ color: 'var(--gold-primary)', fontWeight: '800', fontSize: '15px' }}>
                   $220 Current (+22%)
                 </span>
               </div>
@@ -208,7 +213,9 @@ export default function LandingPage() {
 
         <div className="features-grid">
           <div className="feature-card">
-            <div className="feature-icon">⚡</div>
+            <div className="feature-icon">
+              <IconRules size={22} color="var(--gold-primary)" />
+            </div>
             <h3 className="feature-title">Dynamic Pricing Rules Engine</h3>
             <p className="feature-desc">
               Create rules like <em>"If occupancy &gt; 80%, increase price by 15%"</em> or <em>"Weekend demand +20%"</em>. 
@@ -217,7 +224,9 @@ export default function LandingPage() {
           </div>
 
           <div className="feature-card">
-            <div className="feature-icon">📅</div>
+            <div className="feature-icon">
+              <IconCalendar size={22} color="var(--gold-primary)" />
+            </div>
             <h3 className="feature-title">Interactive Price Calendar</h3>
             <p className="feature-desc">
               Visualize rates across dates and inventory in a clear matrix. Compare standard base prices 
@@ -226,7 +235,9 @@ export default function LandingPage() {
           </div>
 
           <div className="feature-card">
-            <div className="feature-icon">🛡️</div>
+            <div className="feature-icon">
+              <IconShield size={22} color="var(--gold-primary)" />
+            </div>
             <h3 className="feature-title">Manager Review & Safety Limits</h3>
             <p className="feature-desc">
               Never worry about runaway pricing. Configure hard minimum price floors and maximum price ceilings. 
@@ -235,7 +246,9 @@ export default function LandingPage() {
           </div>
 
           <div className="feature-card">
-            <div className="feature-icon">🤖</div>
+            <div className="feature-icon">
+              <IconRecommendations size={22} color="var(--gold-primary)" />
+            </div>
             <h3 className="feature-title">AI Insights & Anomaly Alerts</h3>
             <p className="feature-desc">
               Identifies sudden demand spikes (e.g. occupancy jumping without price adjustments) and generates 
@@ -244,7 +257,9 @@ export default function LandingPage() {
           </div>
 
           <div className="feature-card">
-            <div className="feature-icon">🏢</div>
+            <div className="feature-icon">
+              <IconBuilding size={22} color="var(--gold-primary)" />
+            </div>
             <h3 className="feature-title">Multi-Tenant Data Isolation</h3>
             <p className="feature-desc">
               Every organization has isolated data scoping, dedicated settings, and custom currency/timezone 
@@ -253,7 +268,9 @@ export default function LandingPage() {
           </div>
 
           <div className="feature-card">
-            <div className="feature-icon">👥</div>
+            <div className="feature-icon">
+              <IconUsers size={22} color="var(--gold-primary)" />
+            </div>
             <h3 className="feature-title">Role-Based Access Control (RBAC)</h3>
             <p className="feature-desc">
               Fine-grained permissions for Admins, Revenue Managers, Front Desk/Operations Staff, 
@@ -315,25 +332,25 @@ export default function LandingPage() {
             className={`industry-tab ${activeTab === 'hotels' ? 'active' : ''}`}
             onClick={() => setActiveTab('hotels')}
           >
-            🏨 Hotels & Resorts
+            Hotels & Resorts
           </button>
           <button
             className={`industry-tab ${activeTab === 'rentals' ? 'active' : ''}`}
             onClick={() => setActiveTab('rentals')}
           >
-            🏡 Vacation Rentals
+            Vacation Rentals
           </button>
           <button
             className={`industry-tab ${activeTab === 'venues' ? 'active' : ''}`}
             onClick={() => setActiveTab('venues')}
           >
-            🎪 Event Venues
+            Event Venues
           </button>
           <button
             className={`industry-tab ${activeTab === 'parking' ? 'active' : ''}`}
             onClick={() => setActiveTab('parking')}
           >
-            🅿️ Parking Operations
+            Parking Operations
           </button>
         </div>
 
@@ -347,7 +364,7 @@ export default function LandingPage() {
           </div>
           <p className="ind-desc">{currentInd.desc}</p>
           <div className="ind-sample">
-            <span style={{ fontWeight: '700', color: 'var(--gold-light)' }}>Dynamic Example:</span>{' '}
+            <span style={{ fontWeight: '700', color: 'var(--gold-primary)' }}>Dynamic Example:</span>{' '}
             <span>{currentInd.sample}</span>
           </div>
         </div>
@@ -376,8 +393,7 @@ export default function LandingPage() {
         <div className="landing-footer-inner">
           <div className="footer-col">
             <div className="landing-brand">
-              <div className="landing-brand-logo">📈</div>
-              <span className="landing-brand-title">PRICEMATRIX SaaS</span>
+              <BrandLogo size={32} showSubtitle={false} />
             </div>
             <p className="footer-about">
               Enterprise Multi-Tenant Dynamic Pricing & Revenue Optimization platform. Built per the official SaaS PRD specifications.
@@ -410,7 +426,7 @@ export default function LandingPage() {
         </div>
 
         <div className="footer-bottom">
-          <div>© 2026 PRICEMATRIX Technologies Ltd. All rights reserved.</div>
+          <div>© 2026 PriceMatrix Technologies Ltd. All rights reserved.</div>
           <div style={{ color: 'var(--text-dim)' }}>Dynamic Pricing & Revenue Management System</div>
         </div>
       </footer>

@@ -5,7 +5,7 @@ export default function MilestonePlaceholder({ milestone, title, description, de
     <div className="page-wrapper" style={{ maxWidth: '860px' }}>
       <div className="card placeholder-card">
         <span className="milestone-badge">Scheduled for {milestone}</span>
-        <h1 style={{ fontSize: '24px', fontWeight: '700', color: '#fff', marginTop: '8px' }}>
+        <h1 style={{ fontSize: '24px', fontWeight: '700', color: 'var(--text-primary)', marginTop: '8px' }}>
           {title}
         </h1>
         <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginTop: '8px', maxWidth: '600px', margin: '8px auto 0' }}>

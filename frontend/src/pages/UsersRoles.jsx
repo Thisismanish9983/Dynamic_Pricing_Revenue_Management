@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import apiClient from '../api/client';
+import { IconShield, IconUsers } from '../components/Icons';
 
 const roleMeta = {
   admin: {
@@ -59,7 +60,7 @@ export default function UsersRoles() {
   const handleRoleChange = async (userId, newRole) => {
     if (!isAdmin) return;
     try {
-      const res = await apiClient.put(`/users/${userId}`, { role: newRole });
+      const res = await apiClient.put(`/users/${userId}/role`, { role: newRole });
       if (res.success) {
         setUsers(users.map((u) => (u._id === userId ? { ...u, role: newRole } : u)));
       }
@@ -75,9 +76,9 @@ export default function UsersRoles() {
     try {
       const res = await apiClient.post('/users', formData);
       if (res.success) {
+        setUsers([res.user, ...users]);
         setMsg('User created successfully!');
         setFormData({ name: '', email: '', password: 'password123', role: 'staff' });
-        fetchUsers();
         setTimeout(() => setShowModal(false), 1200);
       }
     } catch (e) {
@@ -85,12 +86,17 @@ export default function UsersRoles() {
     }
   };
 
+  if (loading) {
+    return <div style={{ padding: '40px', textAlign: 'center', color: 'var(--text-muted)' }}>Loading organization users...</div>;
+  }
+
   return (
     <div className="page-wrapper">
+      {/* Top Banner */}
       <div className="card banner-card">
         <div>
-          <h1 style={{ fontSize: '20px', fontWeight: '700', color: '#fff' }}>
-            👥 Users & Role-Based Access Control (RBAC)
+          <h1 style={{ fontSize: '20px', fontWeight: '700', color: 'var(--text-primary)' }}>
+            Users & Role-Based Access Control (RBAC)
           </h1>
           <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '4px' }}>
             Manage organization members and role permissions per the SaaS PRD specification.
@@ -110,7 +116,7 @@ export default function UsersRoles() {
           <div key={key} className="card" style={{ padding: '16px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
               <span className={`role-badge ${info.className}`}>{info.title}</span>
-              <span style={{ fontSize: '14px' }}>🛡️</span>
+              <IconShield size={14} color="var(--text-dim)" />
             </div>
             <div style={{ fontSize: '11px', color: 'var(--text-muted)', lineHeight: '1.4' }}>
               {info.desc}
@@ -122,12 +128,12 @@ export default function UsersRoles() {
       {/* Users Table */}
       <div className="card">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <h3 style={{ fontSize: '14px', fontWeight: '600', color: '#fff' }}>
+          <h3 style={{ fontSize: '14px', fontWeight: '700', color: 'var(--text-primary)' }}>
             Active Members ({users.length})
           </h3>
           {!isAdmin && (
-            <span style={{ fontSize: '11px', color: 'var(--warning)' }}>
-              🔒 Read-only view (Admin role required to modify assignments)
+            <span style={{ fontSize: '11px', color: 'var(--amber)' }}>
+              Read-only view (Admin role required to modify assignments)
             </span>
           )}
         </div>
@@ -150,7 +156,7 @@ export default function UsersRoles() {
                 const isSelf = u._id === currentUser?.id;
                 return (
                   <tr key={u._id}>
-                    <td style={{ fontWeight: '600', color: '#fff' }}>
+                    <td style={{ fontWeight: '600', color: 'var(--text-primary)' }}>
                       {u.name} {isSelf && <span className="status-tag" style={{ marginLeft: '4px' }}>You</span>}
                     </td>
                     <td>{u.email}</td>
@@ -158,7 +164,7 @@ export default function UsersRoles() {
                       <span className={`role-badge ${badge.className}`}>{badge.title}</span>
                     </td>
                     <td>
-                      <span style={{ color: 'var(--success)', fontSize: '12px', fontWeight: '600' }}>
+                      <span style={{ color: 'var(--emerald)', fontSize: '12px', fontWeight: '600' }}>
                         ● Active
                       </span>
                     </td>
@@ -194,7 +200,7 @@ export default function UsersRoles() {
         <div className="modal-overlay">
           <div className="modal-content">
             <button onClick={() => setShowModal(false)} className="modal-close">×</button>
-            <h3 style={{ fontSize: '16px', fontWeight: '700', color: '#fff', marginBottom: '4px' }}>
+            <h3 style={{ fontSize: '16px', fontWeight: '700', color: 'var(--text-primary)', marginBottom: '4px' }}>
               Add Team Member
             </h3>
             <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '16px' }}>

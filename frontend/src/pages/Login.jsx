@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+import apiClient from '../api/client';
+import BrandLogo from '../components/BrandLogo';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -28,7 +30,7 @@ export default function Login() {
     setSeeding(true);
     setError('');
     try {
-      const res = await apiClient.post('/auth/seed-demo', {});
+      await apiClient.post('/auth/seed-demo', {});
       await login('admin@grandvista.com', 'password123');
       window.location.hash = '#/dashboard';
     } catch (err) {
@@ -61,12 +63,14 @@ export default function Login() {
     <div className="auth-wrapper">
       <div className="auth-card">
         <div className="auth-header">
-          <div style={{ fontSize: '36px', marginBottom: '8px' }}>📈</div>
-          <h2 style={{ fontSize: '20px', fontWeight: '700', color: '#fff' }}>
-            Dynamic Pricing & Revenue Management
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '14px' }}>
+            <BrandLogo size={46} showText={false} />
+          </div>
+          <h2 style={{ fontSize: '22px', fontWeight: '800', color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
+            Sign in to PriceMatrix
           </h2>
-          <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '4px' }}>
-            Sign in to access your organization dashboard
+          <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginTop: '4px' }}>
+            Enter your credentials to access the revenue console
           </p>
         </div>
 
@@ -107,9 +111,9 @@ export default function Login() {
 
         {/* Instant 1-Click Demo Logins */}
         <div className="demo-box">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ fontSize: '11px', fontWeight: '700', color: '#fff', textTransform: 'uppercase' }}>
-              ✨ Instant Demo Role Logins
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+            <span style={{ fontSize: '11px', fontWeight: '700', color: 'var(--text-primary)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+              Instant Demo Role Logins
             </span>
             <span style={{ fontSize: '10px', color: 'var(--text-dim)', fontFamily: 'monospace' }}>
               pwd: password123
@@ -122,7 +126,7 @@ export default function Login() {
               onClick={() => handleDemoLogin('admin@grandvista.com')}
               className="demo-btn"
             >
-              <div className="demo-btn-title">👑 Admin</div>
+              <div className="demo-btn-title">Admin</div>
               <div className="demo-btn-desc">Full Organization Access</div>
             </button>
 
@@ -131,7 +135,7 @@ export default function Login() {
               onClick={() => handleDemoLogin('revenue@grandvista.com')}
               className="demo-btn"
             >
-              <div className="demo-btn-title">📈 Revenue Mgr</div>
+              <div className="demo-btn-title">Revenue Mgr</div>
               <div className="demo-btn-desc">Rules & Overrides</div>
             </button>
 
@@ -140,7 +144,7 @@ export default function Login() {
               onClick={() => handleDemoLogin('staff@grandvista.com')}
               className="demo-btn"
             >
-              <div className="demo-btn-title">🛎️ Staff / Ops</div>
+              <div className="demo-btn-title">Staff / Ops</div>
               <div className="demo-btn-desc">Availability Updates</div>
             </button>
 
@@ -149,7 +153,7 @@ export default function Login() {
               onClick={() => handleDemoLogin('viewer@grandvista.com')}
               className="demo-btn"
             >
-              <div className="demo-btn-title">👁️ Viewer</div>
+              <div className="demo-btn-title">Viewer</div>
               <div className="demo-btn-desc">Read-Only Analytics</div>
             </button>
           </div>
@@ -160,25 +164,26 @@ export default function Login() {
               onClick={handleSeedDatabase}
               disabled={seeding}
               style={{
-                background: 'rgba(56, 189, 248, 0.08)',
-                border: '1px dashed rgba(56, 189, 248, 0.4)',
-                color: '#38bdf8',
+                background: 'rgba(37, 99, 235, 0.06)',
+                border: '1px dashed rgba(37, 99, 235, 0.35)',
+                color: 'var(--gold-primary)',
                 fontSize: '11px',
-                padding: '7px 12px',
+                padding: '8px 12px',
                 borderRadius: '8px',
                 cursor: 'pointer',
                 width: '100%',
-                fontWeight: '500',
+                fontWeight: '600',
+                transition: 'all 0.2s ease',
               }}
             >
-              {seeding ? '🌱 Initializing Database...' : '🌱 Cloud Database Empty? 1-Click Initialize Demo Data'}
+              {seeding ? 'Initializing Database...' : 'Cloud Database Empty? 1-Click Initialize Demo Data'}
             </button>
           </div>
         </div>
 
         <div style={{ textAlign: 'center', marginTop: '20px', fontSize: '12px', color: 'var(--text-muted)' }}>
           Create a new organization?{' '}
-          <a href="#/register" style={{ color: 'var(--primary-light)', textDecoration: 'none', fontWeight: '600' }}>
+          <a href="#/register" style={{ color: 'var(--gold-primary)', textDecoration: 'none', fontWeight: '600' }}>
             Register Organization
           </a>
           <div style={{ marginTop: '12px' }}>

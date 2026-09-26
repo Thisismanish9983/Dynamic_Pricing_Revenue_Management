@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import apiClient from '../api/client';
+import {
+  IconDollar,
+  IconTrendingUp,
+  IconBuilding,
+  IconRules
+} from '../components/Icons';
 
 export default function DashboardOverview() {
   const { user, organization, isAdmin, isRevenueManager, isStaff } = useAuth();
@@ -30,8 +36,8 @@ export default function DashboardOverview() {
   if (loading) {
     return (
       <div style={{ textAlign: 'center', padding: '60px 20px', color: 'var(--text-muted)' }}>
-        <div style={{ fontSize: '24px', marginBottom: '8px' }}>🔄</div>
-        <div>Loading operational metrics...</div>
+        <div style={{ fontSize: '20px', marginBottom: '8px' }}>●</div>
+        <div>Loading operational telemetry...</div>
       </div>
     );
   }
@@ -44,12 +50,12 @@ export default function DashboardOverview() {
       <div className="card banner-card">
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <h1 style={{ fontSize: '20px', fontWeight: '700', color: '#fff' }}>
+            <h1 style={{ fontSize: '20px', fontWeight: '700', color: 'var(--text-primary)' }}>
               Welcome back, {user?.name}
             </h1>
             <span className="status-tag">{organization?.name}</span>
           </div>
-          <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '4px' }}>
+          <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginTop: '4px' }}>
             Real-time dynamic pricing telemetry, occupancy monitoring, and automated revenue insights.
           </p>
         </div>
@@ -59,7 +65,7 @@ export default function DashboardOverview() {
           disabled={refreshing}
           className="btn-secondary"
         >
-          {refreshing ? 'Refreshing...' : '🔄 Refresh Telemetry'}
+          {refreshing ? 'Refreshing...' : 'Refresh Telemetry'}
         </button>
       </div>
 
@@ -69,7 +75,9 @@ export default function DashboardOverview() {
         <div className="card">
           <div className="card-header-row">
             <span className="card-title-sm">Projected Monthly Revenue</span>
-            <span style={{ fontSize: '18px' }}>💰</span>
+            <div className="kpi-icon-pill" style={{ background: '#eff6ff', color: '#2563eb', padding: '6px', borderRadius: '8px', display: 'flex' }}>
+              <IconDollar size={18} color="#2563eb" />
+            </div>
           </div>
           <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
             <div className="card-value">${kpis?.currentRevenue?.toLocaleString() || 0}</div>
@@ -84,7 +92,9 @@ export default function DashboardOverview() {
         <div className="card">
           <div className="card-header-row">
             <span className="card-title-sm">Average Unit Rate (ADR)</span>
-            <span style={{ fontSize: '18px' }}>📈</span>
+            <div className="kpi-icon-pill" style={{ background: '#ecfdf5', color: '#059669', padding: '6px', borderRadius: '8px', display: 'flex' }}>
+              <IconTrendingUp size={18} color="#059669" />
+            </div>
           </div>
           <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
             <div className="card-value">${kpis?.averagePrice || 0}</div>
@@ -99,11 +109,13 @@ export default function DashboardOverview() {
         <div className="card">
           <div className="card-header-row">
             <span className="card-title-sm">Portfolio Occupancy</span>
-            <span style={{ fontSize: '18px' }}>🏨</span>
+            <div className="kpi-icon-pill" style={{ background: '#f5f3ff', color: '#7c3aed', padding: '6px', borderRadius: '8px', display: 'flex' }}>
+              <IconBuilding size={18} color="#7c3aed" />
+            </div>
           </div>
           <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
             <div className="card-value">{kpis?.occupancyRate || 0}%</div>
-            <div style={{ fontSize: '12px', color: 'var(--primary-light)' }}>
+            <div style={{ fontSize: '12px', color: 'var(--gold-primary)', fontWeight: '600' }}>
               {kpis?.totalOccupied} / {kpis?.totalCapacity} Units
             </div>
           </div>
@@ -119,11 +131,13 @@ export default function DashboardOverview() {
         <div className="card">
           <div className="card-header-row">
             <span className="card-title-sm">Active Price Adjustments</span>
-            <span style={{ fontSize: '18px' }}>⚡</span>
+            <div className="kpi-icon-pill" style={{ background: '#fffbeb', color: '#d97706', padding: '6px', borderRadius: '8px', display: 'flex' }}>
+              <IconRules size={18} color="#d97706" />
+            </div>
           </div>
           <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
             <div className="card-value">{kpis?.activePriceChanges || 0}</div>
-            <span style={{ fontSize: '11px', color: 'var(--success)', fontWeight: '600' }}>Engine Active</span>
+            <span style={{ fontSize: '11px', color: 'var(--emerald)', fontWeight: '600' }}>Engine Active</span>
           </div>
           <div style={{ fontSize: '11px', color: 'var(--text-dim)', marginTop: '8px' }}>
             {kpis?.highDemandCount} surge • {kpis?.lowDemandCount} promo active
@@ -136,16 +150,13 @@ export default function DashboardOverview() {
         {/* High Demand */}
         <div className="card">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span style={{ fontSize: '18px' }}>🔥</span>
-              <div>
-                <h3 style={{ fontSize: '14px', fontWeight: '600', color: '#fff' }}>
-                  High-Demand Products (≥75% Occupancy)
-                </h3>
-                <div style={{ fontSize: '11px', color: 'var(--text-dim)' }}>Surge rate adjustment active</div>
-              </div>
+            <div>
+              <h3 style={{ fontSize: '14px', fontWeight: '700', color: 'var(--text-primary)' }}>
+                High-Demand Products (≥75% Occupancy)
+              </h3>
+              <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Surge rate adjustment active</div>
             </div>
-            <span className="status-tag" style={{ borderColor: 'rgba(239, 68, 68, 0.4)', color: '#f87171' }}>
+            <span className="status-tag" style={{ borderColor: 'rgba(239, 68, 68, 0.4)', color: '#dc2626', background: '#fef2f2' }}>
               {highDemandItems?.length || 0} Units
             </span>
           </div>
@@ -160,15 +171,15 @@ export default function DashboardOverview() {
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                     <div style={{ textAlign: 'right' }}>
-                      <div style={{ fontSize: '13px', fontWeight: '700', color: 'var(--success)' }}>
+                      <div style={{ fontSize: '13px', fontWeight: '700', color: 'var(--emerald)' }}>
                         ${item.currentPrice}
                       </div>
                       <div style={{ fontSize: '10px', color: 'var(--text-dim)' }}>Current Rate</div>
                     </div>
                     <span style={{
-                      backgroundColor: 'rgba(239, 68, 68, 0.15)',
-                      color: '#f87171',
-                      border: '1px solid rgba(239, 68, 68, 0.3)',
+                      backgroundColor: '#fef2f2',
+                      color: '#dc2626',
+                      border: '1px solid #fecaca',
                       padding: '4px 8px',
                       borderRadius: 'var(--radius-sm)',
                       fontSize: '11px',
@@ -190,14 +201,11 @@ export default function DashboardOverview() {
         {/* Low Demand */}
         <div className="card">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span style={{ fontSize: '18px' }}>❄️</span>
-              <div>
-                <h3 style={{ fontSize: '14px', fontWeight: '600', color: '#fff' }}>
-                  Low-Demand Products (&lt;35% Occupancy)
-                </h3>
-                <div style={{ fontSize: '11px', color: 'var(--text-dim)' }}>Promotional incentive active</div>
-              </div>
+            <div>
+              <h3 style={{ fontSize: '14px', fontWeight: '700', color: 'var(--text-primary)' }}>
+                Low-Demand Products (&lt;35% Occupancy)
+              </h3>
+              <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Promotional incentive active</div>
             </div>
             <span className="status-tag">
               {lowDemandItems?.length || 0} Units
@@ -214,15 +222,15 @@ export default function DashboardOverview() {
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                     <div style={{ textAlign: 'right' }}>
-                      <div style={{ fontSize: '13px', fontWeight: '700', color: 'var(--primary-light)' }}>
+                      <div style={{ fontSize: '13px', fontWeight: '700', color: 'var(--gold-primary)' }}>
                         ${item.currentPrice}
                       </div>
                       <div style={{ fontSize: '10px', color: 'var(--text-dim)' }}>Discounted</div>
                     </div>
                     <span style={{
-                      backgroundColor: 'var(--primary-bg)',
-                      color: 'var(--primary-light)',
-                      border: '1px solid rgba(56, 189, 248, 0.3)',
+                      backgroundColor: '#eff6ff',
+                      color: '#2563eb',
+                      border: '1px solid #bfdbfe',
                       padding: '4px 8px',
                       borderRadius: 'var(--radius-sm)',
                       fontSize: '11px',
@@ -245,11 +253,11 @@ export default function DashboardOverview() {
       {/* Audit Log Trail */}
       <div className="card">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ fontSize: '18px' }}>🕒</span>
-            <h3 style={{ fontSize: '14px', fontWeight: '600', color: '#fff' }}>
+          <div>
+            <h3 style={{ fontSize: '14px', fontWeight: '700', color: 'var(--text-primary)' }}>
               Audit Logging & Price Actions
             </h3>
+            <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Multi-tenant activity records</div>
           </div>
           <span style={{ fontSize: '11px', color: 'var(--text-dim)' }}>Multi-Tenant Scoped</span>
         </div>
@@ -272,10 +280,10 @@ export default function DashboardOverview() {
                     <td style={{ fontFamily: 'monospace', fontSize: '11px' }}>
                       {new Date(log.createdAt).toLocaleTimeString()}
                     </td>
-                    <td style={{ fontWeight: '600', color: '#fff' }}>
+                    <td style={{ fontWeight: '600', color: 'var(--text-primary)' }}>
                       {log.userId?.name || 'System Engine'}
                     </td>
-                    <td style={{ fontFamily: 'monospace', color: 'var(--primary-light)' }}>
+                    <td style={{ fontFamily: 'monospace', color: 'var(--gold-primary)' }}>
                       {log.action}
                     </td>
                     <td>{log.entityType}</td>

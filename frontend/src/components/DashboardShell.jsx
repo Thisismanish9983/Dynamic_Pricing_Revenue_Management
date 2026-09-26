@@ -8,8 +8,8 @@ export default function DashboardShell({ currentRoute, children }) {
 
   if (loading) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'var(--bg-main)', color: 'var(--text-muted)' }}>
-        <div>🔄 Loading Dynamic Pricing Console...</div>
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'var(--bg-deep)', color: 'var(--text-muted)' }}>
+        <div>Loading Console...</div>
       </div>
     );
   }

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+import BrandLogo from '../components/BrandLogo';
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -36,12 +37,14 @@ export default function Register() {
     <div className="auth-wrapper">
       <div className="auth-card">
         <div className="auth-header">
-          <div style={{ fontSize: '32px', marginBottom: '8px' }}>🏢</div>
-          <h2 style={{ fontSize: '20px', fontWeight: '700', color: '#fff' }}>
-            Create Organization Tenant
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '14px' }}>
+            <BrandLogo size={46} showText={false} />
+          </div>
+          <h2 style={{ fontSize: '22px', fontWeight: '800', color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
+            Create Organization Account
           </h2>
-          <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '4px' }}>
-            Pure HTML, CSS, JS & React Multi-Tenant Setup
+          <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginTop: '4px' }}>
+            Set up multi-tenant dynamic pricing for your business
           </p>
         </div>
 
@@ -120,7 +123,7 @@ export default function Register() {
 
         <div style={{ textAlign: 'center', marginTop: '20px', fontSize: '12px', color: 'var(--text-muted)' }}>
           Already registered?{' '}
-          <a href="#/login" style={{ color: 'var(--primary-light)', textDecoration: 'none', fontWeight: '600' }}>
+          <a href="#/login" style={{ color: 'var(--gold-primary)', textDecoration: 'none', fontWeight: '600' }}>
             Sign in
           </a>
           <div style={{ marginTop: '12px' }}>

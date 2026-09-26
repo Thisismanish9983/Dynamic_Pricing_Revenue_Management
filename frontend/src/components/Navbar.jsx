@@ -1,5 +1,6 @@
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
+import { IconBuilding, IconShield } from './Icons';
 
 const roleLabels = {
   admin: { name: 'Admin', className: 'role-admin' },
@@ -16,7 +17,9 @@ export default function Navbar() {
     <header className="navbar">
       {/* Left: Organization & Multi-Tenant Info */}
       <div className="nav-left">
-        <div className="tenant-icon">🏢</div>
+        <div className="tenant-icon">
+          <IconBuilding size={20} color="var(--gold-primary)" />
+        </div>
         <div>
           <div className="tenant-name-row">
             <span className="tenant-title">{organization?.name || 'Grand Vista Boutique Hotel'}</span>
@@ -32,12 +35,12 @@ export default function Navbar() {
       <div className="nav-right">
         {/* Role Badge */}
         <span className={`role-badge ${currentRole.className}`}>
-          🛡️ {currentRole.name}
+          <IconShield size={13} color="currentColor" /> {currentRole.name}
         </span>
 
         {/* User Info */}
         <div style={{ textAlign: 'right', fontSize: '12px' }}>
-          <div style={{ fontWeight: '600', color: '#fff' }}>{user?.name}</div>
+          <div style={{ fontWeight: '600', color: 'var(--text-primary)' }}>{user?.name}</div>
           <div style={{ color: 'var(--text-dim)', fontSize: '11px' }}>{user?.email}</div>
         </div>
 
