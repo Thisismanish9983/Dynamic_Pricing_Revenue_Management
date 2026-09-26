@@ -47,6 +47,14 @@ export default function LandingPage() {
 
   const currentInd = industryDetails[activeTab];
 
+  const scrollToSection = (e, id) => {
+    e.preventDefault();
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <div className="landing-container">
       {/* 1. Global Navigation Bar */}
@@ -57,10 +65,10 @@ export default function LandingPage() {
           </a>
 
           <div className="landing-nav-links">
-            <a href="#features">Features</a>
-            <a href="#how-it-works">How It Works</a>
-            <a href="#industries">Industries</a>
-            <a href="#rules-engine">Rules Engine</a>
+            <a href="#features" onClick={(e) => scrollToSection(e, 'features')}>Features</a>
+            <a href="#how-it-works" onClick={(e) => scrollToSection(e, 'how-it-works')}>How It Works</a>
+            <a href="#industries" onClick={(e) => scrollToSection(e, 'industries')}>Industries</a>
+            <a href="#features" onClick={(e) => scrollToSection(e, 'features')}>Rules Engine</a>
           </div>
 
           <div className="landing-nav-actions">
@@ -402,10 +410,10 @@ export default function LandingPage() {
 
           <div className="footer-col">
             <div className="footer-heading">Platform</div>
-            <a href="#features">Dynamic Rules Engine</a>
-            <a href="#features">Price Calendar</a>
-            <a href="#features">Safety Boundaries</a>
-            <a href="#features">AI Recommendations</a>
+            <a href="#features" onClick={(e) => scrollToSection(e, 'features')}>Dynamic Rules Engine</a>
+            <a href="#features" onClick={(e) => scrollToSection(e, 'features')}>Price Calendar</a>
+            <a href="#features" onClick={(e) => scrollToSection(e, 'features')}>Safety Boundaries</a>
+            <a href="#features" onClick={(e) => scrollToSection(e, 'features')}>AI Recommendations</a>
           </div>
 
           <div className="footer-col">

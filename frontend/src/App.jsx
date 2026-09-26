@@ -9,22 +9,54 @@ import UsersRoles from './pages/UsersRoles';
 import Settings from './pages/Settings';
 import MilestonePlaceholder from './pages/MilestonePlaceholder';
 
-function AppContent() {
-  const [route, setRoute] = useState(() => {
-    const hash = window.location.hash.replace('#/', '').replace('#', '');
-    return hash || 'landing'; // Default to landing page first!
-  });
+function getRouteFromHash() {
+  const rawHash = window.location.hash || '';
+  const clean = rawHash.replace(/^#\/?/, '').trim();
 
+  // Root or empty hash maps to landing
+  if (!clean || clean === '' || clean === '/') {
+    return 'landing';
+  }
+
+  // Anchor sections on landing page (e.g. #features, #how-it-works, #industries, #rules-engine)
+  const landingAnchors = ['features', 'how-it-works', 'industries', 'rules-engine'];
+  if (landingAnchors.includes(clean)) {
+    return 'landing';
+  }
+
+  // Authentication routes
+  if (clean === 'login' || clean === 'register') {
+    return clean;
+  }
+
+  // Protected console routes
+  const consoleRoutes = [
+    'dashboard', 'users', 'settings', 'products', 
+    'rules', 'calendar', 'recommendations', 'analytics', 'notifications'
+  ];
+  if (consoleRoutes.includes(clean)) {
+    return clean;
+  }
+
+  // Default fallback to landing page
+  return 'landing';
+}
+
+function AppContent() {
+  const [route, setRoute] = useState(getRouteFromHash);
   const { user } = useAuth();
 
   useEffect(() => {
-    const handleHashChange = () => {
-      const hash = window.location.hash.replace('#/', '').replace('#', '');
-      setRoute(hash || 'landing');
+    const handleNavigation = () => {
+      setRoute(getRouteFromHash());
     };
 
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
+    window.addEventListener('hashchange', handleNavigation);
+    window.addEventListener('popstate', handleNavigation);
+    return () => {
+      window.removeEventListener('hashchange', handleNavigation);
+      window.removeEventListener('popstate', handleNavigation);
+    };
   }, []);
 
   // 1. Landing Page (First page visitor sees before login/signup)

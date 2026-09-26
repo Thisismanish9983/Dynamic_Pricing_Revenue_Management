@@ -15,7 +15,7 @@ export default function DashboardShell({ currentRoute, children }) {
   }
 
   if (!user) {
-    window.location.hash = '#/login';
+    window.location.replace('#/login');
     return null;
   }
 

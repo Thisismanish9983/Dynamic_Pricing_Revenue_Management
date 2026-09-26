@@ -33,9 +33,41 @@ export default function Register() {
     }
   };
 
+  const handleGoBack = (e) => {
+    if (e) e.preventDefault();
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      window.location.hash = '#/';
+    }
+  };
+
   return (
     <div className="auth-wrapper">
       <div className="auth-card">
+        <button
+          type="button"
+          onClick={handleGoBack}
+          style={{
+            background: 'none',
+            border: 'none',
+            color: 'var(--text-muted)',
+            fontSize: '12px',
+            cursor: 'pointer',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '6px',
+            marginBottom: '14px',
+            padding: '2px 0',
+            fontWeight: '600',
+            transition: 'color 0.15s ease',
+          }}
+          onMouseOver={(e) => (e.currentTarget.style.color = 'var(--text-primary)')}
+          onMouseOut={(e) => (e.currentTarget.style.color = 'var(--text-muted)')}
+        >
+          ← Back to Overview
+        </button>
+
         <div className="auth-header">
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '14px' }}>
             <BrandLogo size={46} showText={false} />
@@ -127,7 +159,11 @@ export default function Register() {
             Sign in
           </a>
           <div style={{ marginTop: '12px' }}>
-            <a href="#/" style={{ color: 'var(--text-dim)', fontSize: '11px', textDecoration: 'none' }}>
+            <a
+              href="#/"
+              onClick={handleGoBack}
+              style={{ color: 'var(--text-dim)', fontSize: '11px', textDecoration: 'none', cursor: 'pointer' }}
+            >
               ← Back to Product Overview
             </a>
           </div>
